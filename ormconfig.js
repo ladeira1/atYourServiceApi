@@ -8,11 +8,11 @@ module.exports = [
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
     synchronize: true,
-    migrations: ['src/database/migrations/*.ts'],
-    entities: ['src/entities/*.ts'],
+    migrations: ['./src/database/migrations/*.ts'],
+    entities: ['./src/entities/*.ts'],
     cli: {
       migrationsDir: './src/database/migrations',
-      entitiesDir: 'src/entities',
+      entitiesDir: './src/entities',
     },
   },
 ];
