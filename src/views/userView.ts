@@ -1,6 +1,6 @@
-import { User } from "../entities/User";
-import { getToken } from "../utils/getToken";
-import { DefaultView } from "./defaultView";
+import { User } from '../entities/User';
+import { getToken } from '../utils/getToken';
+import { DefaultView } from './defaultView';
 
 export class UserView extends DefaultView {
   static returnUser(user: User) {
@@ -10,7 +10,7 @@ export class UserView extends DefaultView {
         email: user.email,
         phone: user.phone,
       },
-      token: getToken(user.id)
-    }
+      token: getToken(user.id),
+    };
   }
 }

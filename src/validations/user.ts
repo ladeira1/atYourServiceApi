@@ -6,7 +6,6 @@ import { UserRepository } from '../repositories/UserRepository';
 import { UserView } from '../views/userView';
 
 export class UserValidator {
-
   async createAccount(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
       name: Yup.string().required(UserErrors.REQUIRED_NAME),
@@ -35,11 +34,13 @@ export class UserValidator {
       return res.status(401).json(UserView.manyErrors(validation));
     }
 
-    const userRepository = getCustomRepository(UserRepository)
+    const userRepository = getCustomRepository(UserRepository);
 
-    const user = await userRepository.findOne({ email: req.body.email })
-    if(user) {
-      return res.status(401).json(UserView.error(UserErrors.EMAIL_ALREADY_IN_USE));
+    const user = await userRepository.findOne({ email: req.body.email });
+    if (user) {
+      return res
+        .status(401)
+        .json(UserView.error(UserErrors.EMAIL_ALREADY_IN_USE));
     }
 
     next();
@@ -68,10 +69,10 @@ export class UserValidator {
       return res.status(401).json(UserView.manyErrors(validation));
     }
 
-    const userRepository = getCustomRepository(UserRepository)
+    const userRepository = getCustomRepository(UserRepository);
 
-    const user = await userRepository.findOne({ email: req.body.email })
-    if(!user) {
+    const user = await userRepository.findOne({ email: req.body.email });
+    if (!user) {
       return res.status(401).json(UserView.error(UserErrors.ACCOUNT_NOT_FOUND));
     }
 

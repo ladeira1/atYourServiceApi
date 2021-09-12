@@ -1,6 +1,12 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from 'typeorm'
-import { v4 as uuid } from 'uuid'
-import bcrypt from 'bcryptjs'
+import {
+  Entity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryColumn,
+} from 'typeorm';
+import { v4 as uuid } from 'uuid';
+import bcrypt from 'bcryptjs';
 
 @Entity('user')
 class User {
@@ -26,11 +32,11 @@ class User {
   updatedAt: Date;
 
   constructor() {
-    if(!this.id) this.id = uuid()
+    if (!this.id) this.id = uuid();
   }
 
   hashPassword(password: string) {
-    this.password = bcrypt.hashSync(password, 8)
+    this.password = bcrypt.hashSync(password, 8);
   }
 
   validatePassword(password: string): boolean {
@@ -38,4 +44,4 @@ class User {
   }
 }
 
-export { User }
+export { User };

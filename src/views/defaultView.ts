@@ -1,14 +1,13 @@
-
 export class DefaultView {
   static success(message: string) {
     return { success: message };
   }
 
   static error(error: string) {
-    return { error: error };
+    return { error };
   }
 
   static manyErrors(messages: string[]) {
-    return messages.map(message => message)
+    return messages.map(message => message);
   }
 }
