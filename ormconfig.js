@@ -9,10 +9,10 @@ module.exports = [
     database: process.env.DATABASE_NAME,
     synchronize: true,
     migrations: ['src/database/migrations/*.ts'],
-    entities: ['src/models/*.ts'],
+    entities: ['src/entities/*.ts'],
     cli: {
       migrationsDir: './src/database/migrations',
-      entitiesDir: 'src/models',
+      entitiesDir: 'src/entities',
     },
   },
 ];
