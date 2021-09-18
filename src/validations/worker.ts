@@ -6,6 +6,8 @@ import { UserErrors } from '../errors/user';
 import { UserRepository } from '../repositories/UserRepository';
 import { UserView } from '../views/userView';
 import { WorkerErrors } from '../errors/worker';
+import { WorkerRepository } from '../repositories/WorkerRepository';
+import { WorkerView } from '../views/workerView';
 
 export class WorkerValidator {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -69,6 +71,16 @@ export class WorkerValidator {
         });
 
       return res.status(401).json(UserView.manyErrors(validation));
+    }
+
+    const workerRepository = getCustomRepository(WorkerRepository);
+    const worker = await workerRepository.findOne({
+      cpfCnpj: req.body.cpfCnpj,
+    });
+    if (worker) {
+      return res
+        .status(401)
+        .json(WorkerView.error(WorkerErrors.ACCOUNT_ALREADY_EXISTS));
     }
 
     next();

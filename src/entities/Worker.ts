@@ -8,7 +8,7 @@ class Worker {
   @JoinColumn({
     referencedColumnName: 'id',
   })
-  id: string;
+  user: User;
 
   @Column({ name: 'cpf_cnpj ' })
   cpfCnpj: string;
