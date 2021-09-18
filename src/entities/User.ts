@@ -1,12 +1,12 @@
+import bcrypt from 'bcryptjs';
 import {
-  Entity,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import bcrypt from 'bcryptjs';
 
 @Entity('user')
 class User {

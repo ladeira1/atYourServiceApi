@@ -6,6 +6,11 @@ import { WorkerRepository } from '../repositories/WorkerRepository';
 import { WorkerView } from '../views/workerView';
 
 class WorkerController {
+  async find(id: string) {
+    const workerRepository = getCustomRepository(WorkerRepository);
+    return workerRepository.findOne({ id });
+  }
+
   async create(req: Request, res: Response) {
     try {
       const userRepository = getCustomRepository(UserRepository);

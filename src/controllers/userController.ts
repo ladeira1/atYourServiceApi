@@ -3,6 +3,8 @@ import { getCustomRepository } from 'typeorm';
 import { UserErrors } from '../errors/user';
 import { UserRepository } from '../repositories/UserRepository';
 import { UserView } from '../views/userView';
+import { WorkerView } from '../views/workerView';
+import { WorkerController } from './workerController';
 
 class UserController {
   async create(req: Request, res: Response) {
@@ -34,6 +36,13 @@ class UserController {
       const user = await userRepository.findOne({ email });
       if (!user.validatePassword(password)) {
         throw new Error(UserErrors.INVALID_PASSWORD);
+      }
+
+      const workerController = new WorkerController();
+      const worker = await workerController.find(user.id);
+      if (worker) {
+        worker.user = user;
+        return res.status(200).json(WorkerView.returnWorker(worker));
       }
 
       return res.status(200).json(UserView.returnUser(user));
