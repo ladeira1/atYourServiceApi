@@ -1,15 +1,12 @@
-import express, { Router } from 'express';
+import express from 'express';
 import './database';
 import cors from 'cors';
-import { userRoutes } from './routes/user';
+import { router } from './routes';
 
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const router = Router();
-router.use('/user', userRoutes);
 
 app.use(router);
 

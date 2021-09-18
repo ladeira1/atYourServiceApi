@@ -8,6 +8,9 @@ class Worker {
   @JoinColumn({
     referencedColumnName: 'id',
   })
+  id: string;
+
+  @OneToOne(() => User, user => user)
   user: User;
 
   @Column({ name: 'cpf_cnpj ' })

@@ -5,8 +5,8 @@ import { UserRepository } from '../repositories/UserRepository';
 import { WorkerRepository } from '../repositories/WorkerRepository';
 import { WorkerView } from '../views/workerView';
 
-class UserController {
-  async createWorker(req: Request, res: Response) {
+class WorkerController {
+  async create(req: Request, res: Response) {
     try {
       const userRepository = getCustomRepository(UserRepository);
       const workerRepository = getCustomRepository(WorkerRepository);
@@ -28,6 +28,7 @@ class UserController {
       }
 
       const worker = workerRepository.create({
+        id: user.id,
         user,
         cpfCnpj: req.body.cpfCnpj,
         address: req.body.address,
@@ -42,4 +43,4 @@ class UserController {
   }
 }
 
-export { UserController };
+export { WorkerController };

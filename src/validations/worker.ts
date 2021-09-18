@@ -15,7 +15,7 @@ export class WorkerValidator {
 
     if ('userId' in req.body) {
       schema = Yup.object().shape({
-        id: Yup.string().required(UserErrors.ACCOUNT_NOT_FOUND),
+        userId: Yup.string().required(UserErrors.ACCOUNT_NOT_FOUND),
         address: Yup.string().required(WorkerErrors.REQUIRED_ADDRESS),
         cpfCnpj: Yup.string()
           .required(WorkerErrors.REQUIRED_CPF_CNPJ)
@@ -27,7 +27,7 @@ export class WorkerValidator {
       });
 
       const userRepository = getCustomRepository(UserRepository);
-      const user = await userRepository.findOne({ id: req.body.id });
+      const user = await userRepository.findOne({ id: req.body.userId });
       if (!user) {
         return res
           .status(401)

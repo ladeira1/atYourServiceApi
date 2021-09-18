@@ -1,9 +1,11 @@
 import { Router } from 'express';
+import { WorkerController } from '../controllers/workerController';
 import { WorkerValidator } from '../validations/worker';
 
 const workerValidator = new WorkerValidator();
+const workerController = new WorkerController();
 
 const router = Router();
-router.post('/create/worker', workerValidator.create);
+router.post('/create', workerValidator.create, workerController.create);
 
-export const userRoutes = router;
+export const workerRoutes = router;
