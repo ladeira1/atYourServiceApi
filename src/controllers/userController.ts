@@ -72,6 +72,23 @@ class UserController {
       res.status(401).json(UserView.error(err.message));
     }
   }
+
+  async update(req: Request, res: Response) {
+    try {
+      const {
+        userId,
+        body: { name },
+      } = req;
+      const userRepository = getCustomRepository(UserRepository);
+      const user = await userRepository.findOne({ id: userId });
+      user.name = name;
+      await userRepository.save(user);
+
+      return res.status(200).json(UserView.returnUser(user));
+    } catch (err) {
+      return UserView.error(err.message);
+    }
+  }
 }
 
 export { UserController };

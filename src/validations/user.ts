@@ -78,4 +78,30 @@ export class UserValidator {
 
     next();
   }
+
+  async update(req: Request, res: Response, next: NextFunction) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(UserErrors.REQUIRED_NAME),
+      password: Yup.string()
+        .required(UserErrors.REQUIRED_PASSWORD)
+        .min(6, UserErrors.INVALID_PASSWORD),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      const validation = await schema
+        .validate(req.body, {
+          abortEarly: false,
+        })
+        .catch(err => {
+          const errors = err.errors.map((message: string) => {
+            return message;
+          });
+          return errors;
+        });
+
+      return res.status(401).json(UserView.manyErrors(validation));
+    }
+
+    next();
+  }
 }
