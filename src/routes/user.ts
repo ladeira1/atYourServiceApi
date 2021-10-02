@@ -16,5 +16,11 @@ router.patch(
   authMiddleware,
   userController.update,
 );
+router.patch(
+  '/password/update',
+  userValidator.updatePassword,
+  authMiddleware,
+  userController.updatePassword,
+);
 
 export const userRoutes = router;

@@ -86,7 +86,29 @@ class UserController {
 
       return res.status(200).json(UserView.returnUser(user));
     } catch (err) {
-      return UserView.error(err.message);
+      return res.status(400).json(UserView.error(err.message));
+    }
+  }
+
+  async updatePassword(req: Request, res: Response) {
+    try {
+      const {
+        userId,
+        body: { oldPassword, password },
+      } = req;
+
+      const userRepository = getCustomRepository(UserRepository);
+      const user = await userRepository.findOne({ id: userId });
+      if (!user.validatePassword(oldPassword)) {
+        return res.status(400).json(UserView.error(UserErrors.WRONG_PASSWORD));
+      }
+
+      user.hashPassword(password);
+      await userRepository.save(user);
+
+      return res.status(204).send();
+    } catch (err) {
+      return res.status(400).json(UserView.error(err.message));
     }
   }
 }
