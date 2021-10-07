@@ -21,5 +21,11 @@ router.patch(
   authMiddleware,
   categoryController.update,
 );
+router.delete(
+  '/delete/:id',
+  categoryValidator.delete,
+  authMiddleware,
+  categoryController.delete,
+);
 
 export const categoryRoutes = router;

@@ -71,6 +71,20 @@ class CategoryController {
       res.status(401).json(CategoryView.error(err));
     }
   }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const categoryRepository = getCustomRepository(CategoryRepository);
+      const category = await categoryRepository.findOne({ id });
+      await categoryRepository.remove(category);
+
+      return res.status(204).send();
+    } catch (err) {
+      res.status(401).json(CategoryView.error(err));
+    }
+  }
 }
 
 export { CategoryController };
