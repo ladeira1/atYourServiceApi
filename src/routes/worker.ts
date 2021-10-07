@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { WorkerController } from '../controllers/workerController';
-import { WorkerValidator } from '../validations/worker';
+import { WorkerValidator } from '../validators/worker';
 
 const workerValidator = new WorkerValidator();
 const workerController = new WorkerController();
