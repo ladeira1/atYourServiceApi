@@ -15,5 +15,11 @@ router.post(
   authMiddleware,
   categoryController.create,
 );
+router.patch(
+  '/update/:id',
+  categoryValidator.update,
+  authMiddleware,
+  categoryController.update,
+);
 
 export const categoryRoutes = router;

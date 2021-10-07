@@ -13,7 +13,7 @@ class CategoryController {
       const category = await categoryRepository.findOne({ id });
       if (!category) {
         return res
-          .status(400)
+          .status(422)
           .json(CategoryView.error(CategoryErrors.NOT_FOUND));
       }
 
@@ -50,6 +50,23 @@ class CategoryController {
       await categoryRepository.save(category);
 
       res.status(201).json(CategoryView.returnCategory(category));
+    } catch (err) {
+      res.status(401).json(CategoryView.error(err));
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      const {
+        body: { name },
+        params: { id },
+      } = req;
+      const categoryRepository = getCustomRepository(CategoryRepository);
+      const category = await categoryRepository.findOne({ id });
+      category.name = name;
+      await categoryRepository.save(category);
+
+      return res.status(200).json(CategoryView.returnCategory(category));
     } catch (err) {
       res.status(401).json(CategoryView.error(err));
     }
