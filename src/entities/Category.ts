@@ -1,21 +1,14 @@
 import {
-  Entity,
-  PrimaryColumn,
   Column,
-  JoinColumn,
-  OneToOne,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './User';
 
 @Entity('category')
 class Category {
-  @PrimaryColumn()
-  @OneToOne(() => User, user => user.id)
-  @JoinColumn({
-    referencedColumnName: 'id',
-  })
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
