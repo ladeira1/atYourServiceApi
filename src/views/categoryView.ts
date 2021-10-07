@@ -7,4 +7,8 @@ export class CategoryView extends DefaultView {
       category,
     };
   }
+
+  static returnMany(categories: Category[]) {
+    return categories.map(category => this.returnCategory(category));
+  }
 }

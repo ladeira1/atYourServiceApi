@@ -23,6 +23,22 @@ class CategoryController {
     }
   }
 
+  async list(req: Request, res: Response) {
+    try {
+      const categoryRepository = getCustomRepository(CategoryRepository);
+      const category = await categoryRepository.find();
+      if (!category) {
+        return res
+          .status(400)
+          .json(CategoryView.error(CategoryErrors.NOT_FOUND));
+      }
+
+      res.status(200).json(CategoryView.returnMany(category));
+    } catch (err) {
+      res.status(401).json(CategoryView.error(err));
+    }
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { name } = req.body;
