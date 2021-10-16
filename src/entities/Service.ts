@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Category } from './Category';
 import { User } from './User';
+import { Worker } from './Worker';
 
 @Entity('service')
 class Service {
