@@ -26,10 +26,6 @@ export class CreateService1634394900550 implements MigrationInterface {
             type: 'numeric',
           },
           {
-            name: 'max_value',
-            type: 'numeric',
-          },
-          {
             name: 'thumbs_up',
             type: 'integer',
           },
