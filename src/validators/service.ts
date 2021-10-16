@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { CategoryErrors } from '../errors/category';
 import { ServiceErrors } from '../errors/service';
 import { CategoryRepository } from '../repositories/CategoryRepository';
+import { ServiceRepository } from '../repositories/ServiceRepository';
+import { WorkerRepository } from '../repositories/WorkerRepository';
 import { ServiceView } from '../views/serviceView';
 
 export class ServiceValidator {
@@ -28,12 +30,34 @@ export class ServiceValidator {
       return res.status(401).json(ServiceView.manyErrors(validation));
     }
 
+    const workerRepository = getCustomRepository(WorkerRepository);
+    const worker = await workerRepository.findOne({ id: req.userId });
+    if (!worker) {
+      return res
+        .status(401)
+        .json(ServiceView.manyErrors(ServiceErrors.NOT_A_WORKER));
+    }
+
     const categoryRepository = getCustomRepository(CategoryRepository);
     const category = await categoryRepository.findOne({
       id: req.body.categoryId,
     });
     if (!category) {
-      return res.status(401).json(ServiceView.error(CategoryErrors.NOT_FOUND));
+      return res
+        .status(401)
+        .json(ServiceView.manyErrors(CategoryErrors.NOT_FOUND));
+    }
+
+    const serviceRepository = getCustomRepository(ServiceRepository);
+    const service = await serviceRepository.findOne({
+      name: req.body.name,
+      worker,
+    });
+
+    if (service) {
+      return res
+        .status(401)
+        .json(ServiceView.manyErrors(ServiceErrors.ALREADY_EXISTS));
     }
 
     next();

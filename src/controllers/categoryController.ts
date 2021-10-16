@@ -14,12 +14,12 @@ class CategoryController {
       if (!category) {
         return res
           .status(422)
-          .json(CategoryView.error(CategoryErrors.NOT_FOUND));
+          .json(CategoryView.manyErrors(CategoryErrors.NOT_FOUND));
       }
 
       res.status(200).json(CategoryView.returnCategory(category));
     } catch (err) {
-      res.status(401).json(CategoryView.error(err));
+      res.status(401).json(CategoryView.manyErrors(err));
     }
   }
 
@@ -30,12 +30,12 @@ class CategoryController {
       if (!category) {
         return res
           .status(400)
-          .json(CategoryView.error(CategoryErrors.NOT_FOUND));
+          .json(CategoryView.manyErrors(CategoryErrors.NOT_FOUND));
       }
 
       res.status(200).json(CategoryView.returnMany(category));
     } catch (err) {
-      res.status(401).json(CategoryView.error(err));
+      res.status(401).json(CategoryView.manyErrors(err));
     }
   }
 
@@ -51,7 +51,7 @@ class CategoryController {
 
       res.status(201).json(CategoryView.returnCategory(category));
     } catch (err) {
-      res.status(401).json(CategoryView.error(err));
+      res.status(401).json(CategoryView.manyErrors(err));
     }
   }
 
@@ -68,7 +68,7 @@ class CategoryController {
 
       return res.status(200).json(CategoryView.returnCategory(category));
     } catch (err) {
-      res.status(401).json(CategoryView.error(err));
+      res.status(401).json(CategoryView.manyErrors(err));
     }
   }
 
@@ -82,7 +82,7 @@ class CategoryController {
 
       return res.status(204).send();
     } catch (err) {
-      res.status(401).json(CategoryView.error(err));
+      res.status(401).json(CategoryView.manyErrors(err));
     }
   }
 }

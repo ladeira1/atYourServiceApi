@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { CategoryRepository } from '../repositories/CategoryRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
-import { WorkerRepository } from '../repositories/WorkerRepository';
 import { ServiceView } from '../views/serviceView';
+import { WorkerController } from './workerController';
 
 class ServiceController {
   async create(req: Request, res: Response) {
@@ -13,8 +13,8 @@ class ServiceController {
         userId,
       } = req;
 
-      const workerRepository = getCustomRepository(WorkerRepository);
-      const worker = await workerRepository.findOne({ id: userId });
+      const workerController = new WorkerController();
+      const worker = await workerController.find(userId);
 
       const categoryRepository = getCustomRepository(CategoryRepository);
       const category = await categoryRepository.findOne({ id: categoryId });
@@ -33,7 +33,7 @@ class ServiceController {
 
       res.status(201).json(ServiceView.returnService(service));
     } catch (err) {
-      res.status(401).json(ServiceView.error(err));
+      res.status(401).json(ServiceView.manyErrors(err));
     }
   }
 }

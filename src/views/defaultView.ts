@@ -7,7 +7,13 @@ export class DefaultView {
     return { error };
   }
 
-  static manyErrors(messages: string[]) {
-    return messages.map(message => message);
+  static manyErrors(messages: string[] | string) {
+    if (Array.isArray(messages)) {
+      return {
+        error: messages.map(message => message),
+      };
+    }
+
+    return { error: messages };
   }
 }

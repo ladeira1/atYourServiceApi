@@ -1,4 +1,12 @@
-import { Entity, PrimaryColumn, Column, JoinColumn, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
+import { Service } from './Service';
 import { User } from './User';
 
 @Entity('worker')
@@ -18,6 +26,9 @@ class Worker {
 
   @Column()
   address: string;
+
+  @OneToMany(() => Service, service => service)
+  services: Service[];
 }
 
 export { Worker };

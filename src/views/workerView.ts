@@ -6,8 +6,8 @@ import { UserView } from './userView';
 export class WorkerView extends DefaultView {
   static returnWorker(worker: Worker) {
     return {
-      ...UserView.returnUser(worker.user),
       worker: {
+        ...UserView.returnUser(worker.user),
         cpfCnpj: worker.cpfCnpj,
         address: worker.address,
       },

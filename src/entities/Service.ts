@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -35,7 +36,7 @@ class Service {
   @OneToMany(() => Category, category => category)
   category: Category;
 
-  @OneToMany(() => Worker, worker => worker)
+  @ManyToOne(() => Worker, worker => worker)
   worker: Worker;
 }
 

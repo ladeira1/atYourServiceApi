@@ -9,8 +9,8 @@ const serviceController = new ServiceController();
 const router = Router();
 router.post(
   '/create',
-  serviceValidator.create,
   authMiddleware,
+  serviceValidator.create,
   serviceController.create,
 );
 

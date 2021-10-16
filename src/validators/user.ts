@@ -40,7 +40,7 @@ export class UserValidator {
     if (user) {
       return res
         .status(401)
-        .json(UserView.error(UserErrors.EMAIL_ALREADY_IN_USE));
+        .json(UserView.manyErrors(UserErrors.EMAIL_ALREADY_IN_USE));
     }
 
     next();
@@ -73,7 +73,9 @@ export class UserValidator {
 
     const user = await userRepository.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(401).json(UserView.error(UserErrors.ACCOUNT_NOT_FOUND));
+      return res
+        .status(401)
+        .json(UserView.manyErrors(UserErrors.ACCOUNT_NOT_FOUND));
     }
 
     next();

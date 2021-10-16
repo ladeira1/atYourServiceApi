@@ -1,10 +1,19 @@
 import { Service } from '../entities/Service';
 import { DefaultView } from './defaultView';
+import { WorkerView } from './workerView';
 
 export class ServiceView extends DefaultView {
   static returnService(service: Service) {
     return {
-      service,
+      service: {
+        name: service.name,
+        minValue: service.minValue,
+        thumbsUp: service.thumbsUp,
+        timesProvided: service.timesProvided,
+        createdAt: service.createdAt,
+        updatedAt: service.updatedAt,
+        ...WorkerView.returnWorker(service.worker),
+      },
     };
   }
 

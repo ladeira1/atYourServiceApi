@@ -8,7 +8,13 @@ import { WorkerView } from '../views/workerView';
 class WorkerController {
   async find(id: string) {
     const workerRepository = getCustomRepository(WorkerRepository);
-    return workerRepository.findOne({ id });
+    const worker = await workerRepository.findOne({ id });
+
+    const userRepository = getCustomRepository(UserRepository);
+    const user = await userRepository.findOne({ id });
+
+    worker.user = user;
+    return worker;
   }
 
   async create(req: Request, res: Response) {
@@ -43,7 +49,7 @@ class WorkerController {
 
       res.status(201).json(WorkerView.returnWorker(worker));
     } catch (err) {
-      res.status(401).json(WorkerView.error(err));
+      res.status(401).json(WorkerView.manyErrors(err));
     }
   }
 }
