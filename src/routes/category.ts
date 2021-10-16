@@ -7,8 +7,8 @@ const categoryValidator = new CategoryValidator();
 const categoryController = new CategoryController();
 
 const router = Router();
+router.get('/list', categoryController.list);
 router.get('/:id', categoryController.find);
-router.get('/', categoryController.list);
 router.post(
   '/create',
   categoryValidator.create,

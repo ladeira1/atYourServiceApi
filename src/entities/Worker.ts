@@ -21,13 +21,13 @@ class Worker {
   @OneToOne(() => User, user => user)
   user: User;
 
-  @Column({ name: 'cpf_cnpj ' })
+  @Column({ name: 'cpf_cnpj' })
   cpfCnpj: string;
 
   @Column()
   address: string;
 
-  @OneToMany(() => Service, service => service)
+  @OneToMany(() => Service, service => service.worker)
   services: Service[];
 }
 

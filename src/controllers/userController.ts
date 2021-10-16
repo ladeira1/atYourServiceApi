@@ -48,6 +48,7 @@ class UserController {
 
       return res.status(200).json(UserView.returnUser(user));
     } catch (err) {
+      console.log('err', err);
       res.status(401).json(UserView.manyErrors(err.message));
     }
   }

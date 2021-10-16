@@ -9,6 +9,7 @@ class WorkerController {
   async find(id: string) {
     const workerRepository = getCustomRepository(WorkerRepository);
     const worker = await workerRepository.findOne({ id });
+    if (!worker) return null;
 
     const userRepository = getCustomRepository(UserRepository);
     const user = await userRepository.findOne({ id });

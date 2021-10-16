@@ -49,7 +49,7 @@ export class CreateService1634394900550 implements MigrationInterface {
           },
           {
             name: 'worker',
-            type: 'varchar',
+            type: 'uuid',
           },
         ],
       }),

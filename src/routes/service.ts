@@ -7,6 +7,8 @@ const serviceValidator = new ServiceValidator();
 const serviceController = new ServiceController();
 
 const router = Router();
+router.get('/list', serviceController.list);
+router.get('/:id', serviceController.find);
 router.post(
   '/create',
   authMiddleware,

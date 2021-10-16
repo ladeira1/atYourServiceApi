@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -33,10 +32,10 @@ class Service {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => Category, category => category)
+  @ManyToOne(() => Category, category => category.services, { eager: true })
   category: Category;
 
-  @ManyToOne(() => Worker, worker => worker)
+  @ManyToOne(() => Worker, worker => worker.services, { eager: true })
   worker: Worker;
 }
 

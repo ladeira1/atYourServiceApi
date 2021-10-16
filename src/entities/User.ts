@@ -12,7 +12,7 @@ import { Worker } from './Worker';
 
 @Entity('user')
 class User {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
 
   @Column()
@@ -33,7 +33,7 @@ class User {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToOne(() => Worker, worker => worker)
+  @OneToOne(() => Worker, worker => worker.user)
   worker: Worker;
 
   constructor() {
