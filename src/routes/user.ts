@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/userController';
 import { authMiddleware } from '../middlewares/auth';
-import { UserValidator } from '../validations/user';
+import { UserValidator } from '../validators/user';
 
 const userValidator = new UserValidator();
 const userController = new UserController();
