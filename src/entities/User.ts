@@ -27,6 +27,9 @@ class User {
   @Column()
   phone: string;
 
+  @Column()
+  city: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

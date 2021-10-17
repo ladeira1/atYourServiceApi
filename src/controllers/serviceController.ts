@@ -10,8 +10,7 @@ class ServiceController {
   async list(req: Request, res: Response) {
     try {
       const serviceRepository = getCustomRepository(ServiceRepository);
-      const services = await serviceRepository.find({});
-      console.log(services);
+      const services = await serviceRepository.find();
 
       return res.status(200).json(ServiceView.returnMany(services));
     } catch (err) {
@@ -31,8 +30,6 @@ class ServiceController {
           .status(422)
           .json(ServiceView.manyErrors(ServiceErrors.NOT_FOUND));
       }
-
-      console.log(service);
 
       return res.status(200).json(ServiceView.returnService(service));
     } catch (err) {

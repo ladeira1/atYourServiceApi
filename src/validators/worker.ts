@@ -72,7 +72,6 @@ export class WorkerValidator {
 
       return res.status(401).json(UserView.manyErrors(validation));
     }
-
     const workerRepository = getCustomRepository(WorkerRepository);
     const worker = await workerRepository.findOne({
       cpfCnpj: req.body.cpfCnpj,

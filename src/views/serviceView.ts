@@ -7,6 +7,7 @@ export class ServiceView extends DefaultView {
   static returnService(service: Service) {
     return {
       service: {
+        id: service.id,
         name: service.name,
         minValue: service.minValue,
         thumbsUp: service.thumbsUp,

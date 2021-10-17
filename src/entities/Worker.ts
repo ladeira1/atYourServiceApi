@@ -12,13 +12,10 @@ import { User } from './User';
 @Entity('worker')
 class Worker {
   @PrimaryColumn()
-  @OneToOne(() => User, user => user.id)
-  @JoinColumn({
-    referencedColumnName: 'id',
-  })
   id: string;
 
-  @OneToOne(() => User, user => user)
+  @OneToOne(() => User, user => user, { eager: true })
+  @JoinColumn({ name: 'user' })
   user: User;
 
   @Column({ name: 'cpf_cnpj' })

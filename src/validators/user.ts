@@ -10,6 +10,7 @@ export class UserValidator {
     const schema = Yup.object().shape({
       name: Yup.string().required(UserErrors.REQUIRED_NAME),
       email: Yup.string().email().required(UserErrors.REQUIRED_EMAIL),
+      city: Yup.string().required(UserErrors.REQUIRED_CITY),
       password: Yup.string()
         .required(UserErrors.REQUIRED_PASSWORD)
         .min(6, UserErrors.INVALID_PASSWORD),

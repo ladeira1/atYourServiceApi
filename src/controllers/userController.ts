@@ -10,7 +10,7 @@ import { WorkerController } from './workerController';
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const { name, email, password, phone } = req.body;
+      const { name, email, city, password, phone } = req.body;
 
       const userRepository = getCustomRepository(UserRepository);
 
@@ -18,6 +18,7 @@ class UserController {
         name,
         email,
         phone,
+        city,
       });
       user.hashPassword(password);
 
@@ -34,7 +35,9 @@ class UserController {
 
       const userRepository = getCustomRepository(UserRepository);
 
-      const user = await userRepository.findOne({ email });
+      const user = await userRepository.findOne({
+        where: { email },
+      });
       if (!user.validatePassword(password)) {
         throw new Error(UserErrors.INVALID_PASSWORD);
       }
@@ -48,7 +51,6 @@ class UserController {
 
       return res.status(200).json(UserView.returnUser(user));
     } catch (err) {
-      console.log('err', err);
       res.status(401).json(UserView.manyErrors(err.message));
     }
   }
