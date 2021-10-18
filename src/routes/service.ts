@@ -15,5 +15,6 @@ router.post(
   serviceValidator.create,
   serviceController.create,
 );
+router.delete('/delete/:id', authMiddleware, serviceController.delete);
 
 export const serviceRoutes = router;

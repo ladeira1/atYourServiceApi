@@ -3,6 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import { ServiceErrors } from '../errors/service';
 import { CategoryRepository } from '../repositories/CategoryRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
+import { WorkerRepository } from '../repositories/WorkerRepository';
 import { ServiceView } from '../views/serviceView';
 import { WorkerController } from './workerController';
 
@@ -62,9 +63,47 @@ class ServiceController {
 
       await serviceRepository.save(service);
 
-      res.status(201).json(ServiceView.returnService(service));
+      return res.status(201).json(ServiceView.returnService(service));
     } catch (err) {
-      res.status(401).json(ServiceView.manyErrors(err));
+      return res.status(401).json(ServiceView.manyErrors(err));
+    }
+  }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const {
+        userId,
+        params: { id },
+      } = req;
+
+      const workerRepository = getCustomRepository(WorkerRepository);
+      const worker = await workerRepository.findOne({
+        id: userId,
+      });
+
+      if (!worker) {
+        return res
+          .status(401)
+          .json(ServiceView.manyErrors(ServiceErrors.INVALID_WORKER));
+      }
+
+      const serviceRepository = getCustomRepository(ServiceRepository);
+      const service = await serviceRepository.findOne({
+        id,
+        worker,
+      });
+
+      if (!service) {
+        return res
+          .status(401)
+          .json(ServiceView.manyErrors(ServiceErrors.NOT_FOUND));
+      }
+
+      await serviceRepository.remove(service);
+
+      return res.status(204).send();
+    } catch (err) {
+      return res.status(401).json(ServiceView.manyErrors(err));
     }
   }
 }
