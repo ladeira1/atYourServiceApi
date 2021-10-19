@@ -106,6 +106,32 @@ class ServiceController {
       return res.status(401).json(ServiceView.manyErrors(err));
     }
   }
+
+  async update(req: Request, res: Response) {
+    try {
+      const {
+        body: { name, minValue, categoryId },
+        params: { id },
+      } = req;
+
+      const serviceRepository = getCustomRepository(ServiceRepository);
+      const service = await serviceRepository.findOne({ id });
+
+      if (name) service.name = name;
+      if (minValue) service.minValue = minValue;
+      if (categoryId) {
+        const categoryRepository = getCustomRepository(CategoryRepository);
+        const category = await categoryRepository.findOne({ id: categoryId });
+
+        service.category = category;
+      }
+
+      await serviceRepository.save(service);
+      return res.status(200).json(ServiceView.returnService(service));
+    } catch (err) {
+      return res.status(401).json(ServiceView.manyErrors(err));
+    }
+  }
 }
 
 export { ServiceController };

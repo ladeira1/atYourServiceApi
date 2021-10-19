@@ -15,6 +15,12 @@ router.post(
   serviceValidator.create,
   serviceController.create,
 );
+router.patch(
+  '/update/:id',
+  authMiddleware,
+  serviceValidator.update,
+  serviceController.update,
+);
 router.delete('/delete/:id', authMiddleware, serviceController.delete);
 
 export const serviceRoutes = router;
