@@ -175,8 +175,6 @@ class ServiceController {
         }
       }
 
-      console.log(images);
-
       service.images = images;
       await serviceRepository.save(service);
 
