@@ -1,11 +1,15 @@
+/* eslint-disable no-await-in-loop */
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
+import imgbbUploader from 'imgbb-uploader';
 import { ServiceErrors } from '../errors/service';
 import { CategoryRepository } from '../repositories/CategoryRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { WorkerRepository } from '../repositories/WorkerRepository';
 import { ServiceView } from '../views/serviceView';
 import { WorkerController } from './workerController';
+import { ImageRepository } from '../repositories/ImageRepository';
+import { Image } from '../entities/Image';
 
 class ServiceController {
   async list(req: Request, res: Response) {
@@ -43,6 +47,7 @@ class ServiceController {
       const {
         body: { name, minValue, categoryId },
         userId,
+        files,
       } = req;
 
       const workerController = new WorkerController();
@@ -61,6 +66,28 @@ class ServiceController {
         worker,
       });
 
+      const imageRepository = getCustomRepository(ImageRepository);
+      const images: Image[] = [];
+
+      if (files && Array.isArray(files)) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const response = await imgbbUploader(
+            process.env.IMGBB_API_KEY,
+            file.path,
+          );
+
+          const image = imageRepository.create({
+            url: response.url,
+            service,
+          });
+
+          await imageRepository.save(image);
+          images.push(image);
+        }
+      }
+
+      service.images = images;
       await serviceRepository.save(service);
 
       return res.status(201).json(ServiceView.returnService(service));
@@ -112,6 +139,7 @@ class ServiceController {
       const {
         body: { name, minValue, categoryId },
         params: { id },
+        files,
       } = req;
 
       const serviceRepository = getCustomRepository(ServiceRepository);
@@ -126,7 +154,32 @@ class ServiceController {
         service.category = category;
       }
 
+      const imageRepository = getCustomRepository(ImageRepository);
+      const images: Image[] = [];
+
+      if (files && Array.isArray(files)) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const response = await imgbbUploader(
+            process.env.IMGBB_API_KEY,
+            file.path,
+          );
+
+          const image = imageRepository.create({
+            url: response.url,
+            service,
+          });
+
+          await imageRepository.save(image);
+          images.push(image);
+        }
+      }
+
+      console.log(images);
+
+      service.images = images;
       await serviceRepository.save(service);
+
       return res.status(200).json(ServiceView.returnService(service));
     } catch (err) {
       return res.status(401).json(ServiceView.manyErrors(err));

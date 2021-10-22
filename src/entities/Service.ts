@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from './Category';
+import { Image } from './Image';
 import { Worker } from './Worker';
 
 @Entity('service')
@@ -37,6 +39,11 @@ class Service {
 
   @ManyToOne(() => Worker, worker => worker.services, { eager: true })
   worker: Worker;
+
+  @OneToMany(() => Image, image => image.service, {
+    eager: true,
+  })
+  images: Image[];
 }
 
 export { Service };

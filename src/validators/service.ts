@@ -92,14 +92,16 @@ export class ServiceValidator {
         .json(ServiceView.manyErrors(ServiceErrors.NOT_A_WORKER));
     }
 
-    const categoryRepository = getCustomRepository(CategoryRepository);
-    const category = await categoryRepository.findOne({
-      id: req.body.categoryId,
-    });
-    if (!category) {
-      return res
-        .status(401)
-        .json(ServiceView.manyErrors(CategoryErrors.NOT_FOUND));
+    if (req.body.categoryId) {
+      const categoryRepository = getCustomRepository(CategoryRepository);
+      const category = await categoryRepository.findOne({
+        id: req.body.categoryId,
+      });
+      if (!category) {
+        return res
+          .status(401)
+          .json(ServiceView.manyErrors(CategoryErrors.NOT_FOUND));
+      }
     }
 
     const serviceRepository = getCustomRepository(ServiceRepository);

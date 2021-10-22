@@ -12,6 +12,7 @@ export class ServiceView extends DefaultView {
         minValue: service.minValue,
         thumbsUp: service.thumbsUp,
         timesProvided: service.timesProvided,
+        images: service?.images ?? [],
         createdAt: service.createdAt,
         updatedAt: service.updatedAt,
         ...CategoryView.returnCategory(service.category),
