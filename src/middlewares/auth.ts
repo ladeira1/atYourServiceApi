@@ -22,6 +22,10 @@ export const authMiddleware = async (
     return res.status(401).json({ error: 'Token does not match Bearer' });
   }
 
+  if (!token || token === '') {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+
   try {
     const decoded: any = jwt.verify(
       token,

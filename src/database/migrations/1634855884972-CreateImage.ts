@@ -1,10 +1,15 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class CreateCategory1633645620958 implements MigrationInterface {
+export class CreateImage1634855884972 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'category',
+        name: 'image',
         columns: [
           {
             name: 'id',
@@ -13,7 +18,7 @@ export class CreateCategory1633645620958 implements MigrationInterface {
             isGenerated: false,
           },
           {
-            name: 'name',
+            name: 'url',
             type: 'varchar',
           },
           {
@@ -26,12 +31,27 @@ export class CreateCategory1633645620958 implements MigrationInterface {
             type: 'timestamp',
             default: 'now()',
           },
+          {
+            name: 'service',
+            type: 'integer',
+          },
         ],
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'image',
+      new TableForeignKey({
+        columnNames: ['service'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'service',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('category');
+    await queryRunner.dropTable('image');
   }
 }

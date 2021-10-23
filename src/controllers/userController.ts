@@ -10,7 +10,7 @@ import { WorkerController } from './workerController';
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const { name, email, password, phone } = req.body;
+      const { name, email, city, password, phone } = req.body;
 
       const userRepository = getCustomRepository(UserRepository);
 
@@ -18,13 +18,14 @@ class UserController {
         name,
         email,
         phone,
+        city,
       });
       user.hashPassword(password);
 
       await userRepository.save(user);
       res.status(201).json(UserView.returnUser(user));
     } catch (err) {
-      res.status(401).json(UserView.error(err));
+      res.status(401).json(UserView.manyErrors(err));
     }
   }
 
@@ -34,7 +35,9 @@ class UserController {
 
       const userRepository = getCustomRepository(UserRepository);
 
-      const user = await userRepository.findOne({ email });
+      const user = await userRepository.findOne({
+        where: { email },
+      });
       if (!user.validatePassword(password)) {
         throw new Error(UserErrors.INVALID_PASSWORD);
       }
@@ -48,7 +51,7 @@ class UserController {
 
       return res.status(200).json(UserView.returnUser(user));
     } catch (err) {
-      res.status(401).json(UserView.error(err.message));
+      res.status(401).json(UserView.manyErrors(err.message));
     }
   }
 
@@ -69,7 +72,7 @@ class UserController {
 
       return res.status(204).send();
     } catch (err) {
-      res.status(401).json(UserView.error(err.message));
+      res.status(401).json(UserView.manyErrors(err.message));
     }
   }
 
@@ -86,7 +89,7 @@ class UserController {
 
       return res.status(200).json(UserView.returnUser(user));
     } catch (err) {
-      return res.status(400).json(UserView.error(err.message));
+      return res.status(400).json(UserView.manyErrors(err.message));
     }
   }
 
@@ -100,7 +103,9 @@ class UserController {
       const userRepository = getCustomRepository(UserRepository);
       const user = await userRepository.findOne({ id: userId });
       if (!user.validatePassword(oldPassword)) {
-        return res.status(400).json(UserView.error(UserErrors.WRONG_PASSWORD));
+        return res
+          .status(400)
+          .json(UserView.manyErrors(UserErrors.WRONG_PASSWORD));
       }
 
       user.hashPassword(password);
@@ -108,7 +113,7 @@ class UserController {
 
       return res.status(204).send();
     } catch (err) {
-      return res.status(400).json(UserView.error(err.message));
+      return res.status(400).json(UserView.manyErrors(err.message));
     }
   }
 }

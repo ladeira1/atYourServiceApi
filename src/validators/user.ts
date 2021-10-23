@@ -10,6 +10,7 @@ export class UserValidator {
     const schema = Yup.object().shape({
       name: Yup.string().required(UserErrors.REQUIRED_NAME),
       email: Yup.string().email().required(UserErrors.REQUIRED_EMAIL),
+      city: Yup.string().required(UserErrors.REQUIRED_CITY),
       password: Yup.string()
         .required(UserErrors.REQUIRED_PASSWORD)
         .min(6, UserErrors.INVALID_PASSWORD),
@@ -40,7 +41,7 @@ export class UserValidator {
     if (user) {
       return res
         .status(401)
-        .json(UserView.error(UserErrors.EMAIL_ALREADY_IN_USE));
+        .json(UserView.manyErrors(UserErrors.EMAIL_ALREADY_IN_USE));
     }
 
     next();
@@ -73,7 +74,9 @@ export class UserValidator {
 
     const user = await userRepository.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(401).json(UserView.error(UserErrors.ACCOUNT_NOT_FOUND));
+      return res
+        .status(401)
+        .json(UserView.manyErrors(UserErrors.ACCOUNT_NOT_FOUND));
     }
 
     next();

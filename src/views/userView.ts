@@ -10,8 +10,9 @@ export class UserView extends DefaultView {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        city: user.city,
+        token: getToken(user.id),
       },
-      token: getToken(user.id),
     };
   }
 }

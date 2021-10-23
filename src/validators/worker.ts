@@ -31,7 +31,7 @@ export class WorkerValidator {
       if (!user) {
         return res
           .status(401)
-          .json(UserView.error(UserErrors.ACCOUNT_NOT_FOUND));
+          .json(UserView.manyErrors(UserErrors.ACCOUNT_NOT_FOUND));
       }
     } else {
       schema = Yup.object().shape({
@@ -72,7 +72,6 @@ export class WorkerValidator {
 
       return res.status(401).json(UserView.manyErrors(validation));
     }
-
     const workerRepository = getCustomRepository(WorkerRepository);
     const worker = await workerRepository.findOne({
       cpfCnpj: req.body.cpfCnpj,
@@ -80,7 +79,7 @@ export class WorkerValidator {
     if (worker) {
       return res
         .status(401)
-        .json(WorkerView.error(WorkerErrors.ACCOUNT_ALREADY_EXISTS));
+        .json(WorkerView.manyErrors(WorkerErrors.ACCOUNT_ALREADY_EXISTS));
     }
 
     next();

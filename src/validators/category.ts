@@ -31,7 +31,7 @@ export class CategoryValidator {
     if (category) {
       return res
         .status(401)
-        .json(CategoryView.error(CategoryErrors.NAME_ALREADY_IN_USE));
+        .json(CategoryView.manyErrors(CategoryErrors.NAME_ALREADY_IN_USE));
     }
 
     next();
@@ -59,7 +59,9 @@ export class CategoryValidator {
     const categoryRepository = getCustomRepository(CategoryRepository);
     const category = await categoryRepository.findOne({ id: req.params.id });
     if (!category) {
-      return res.status(401).json(CategoryView.error(CategoryErrors.NOT_FOUND));
+      return res
+        .status(401)
+        .json(CategoryView.manyErrors(CategoryErrors.NOT_FOUND));
     }
 
     next();
@@ -87,7 +89,9 @@ export class CategoryValidator {
     const categoryRepository = getCustomRepository(CategoryRepository);
     const category = await categoryRepository.findOne({ id: req.params.id });
     if (!category) {
-      return res.status(401).json(CategoryView.error(CategoryErrors.NOT_FOUND));
+      return res
+        .status(401)
+        .json(CategoryView.manyErrors(CategoryErrors.NOT_FOUND));
     }
 
     next();

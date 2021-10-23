@@ -2,22 +2,22 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Service } from './Service';
 
-@Entity('category')
-class Category {
+@Entity('image')
+class Image {
   @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
-  name: string;
+  url: string;
 
-  @OneToMany(() => Service, service => service.category)
-  services: Service[];
+  @ManyToOne(() => Service, service => service.images, { onDelete: 'CASCADE' })
+  service: Service;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -26,4 +26,4 @@ class Category {
   updatedAt: Date;
 }
 
-export { Category };
+export { Image };
