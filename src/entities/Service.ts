@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Category } from './Category';
 import { Image } from './Image';
+import { Offer } from './Offer';
 import { Worker } from './Worker';
 
 @Entity('service')
@@ -44,6 +45,9 @@ class Service {
     eager: true,
   })
   images: Image[];
+
+  @OneToMany(() => Offer, offer => offer.service)
+  offers: Offer[];
 }
 
 export { Service };

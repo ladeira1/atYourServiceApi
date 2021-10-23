@@ -3,11 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Offer } from './Offer';
 import { Worker } from './Worker';
 
 @Entity('user')
@@ -38,6 +40,9 @@ class User {
 
   @OneToOne(() => Worker, worker => worker.user)
   worker: Worker;
+
+  @OneToMany(() => Offer, offer => offer.user)
+  offers: Offer[];
 
   constructor() {
     if (!this.id) this.id = uuid();
