@@ -3,6 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import { OfferErrors } from '../errors/offer';
 import { ServiceErrors } from '../errors/service';
+import { WorkerErrors } from '../errors/worker';
 import { OfferRepository } from '../repositories/OfferRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { UserRepository } from '../repositories/UserRepository';
@@ -10,6 +11,16 @@ import { WorkerRepository } from '../repositories/WorkerRepository';
 import { OfferView } from '../views/offerView';
 
 export class OfferValidator {
+  async list(req: Request, res: Response, next: NextFunction) {
+    const workerRepository = getCustomRepository(WorkerRepository);
+    const worker = await workerRepository.findOne({ id: req.userId });
+    if (!worker) {
+      return res.status(404).json(OfferView.manyErrors(WorkerErrors.NOT_FOUND));
+    }
+
+    next();
+  }
+
   async create(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
       title: Yup.string().required(OfferErrors.REQUIRED_TITLE),

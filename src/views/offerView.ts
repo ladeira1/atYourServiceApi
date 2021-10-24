@@ -6,15 +6,22 @@ import { UserView } from './userView';
 export class OfferView extends DefaultView {
   static returnOffer(offer: Offer) {
     return {
-      id: offer.id,
-      message: offer.message,
-      status: offer.status,
-      title: offer.title,
-      user: UserView.returnUser(offer.user),
-      service: ServiceView.returnService(offer.service),
-      createdAt: offer.createdAt,
-      updatedAt: offer.updatedAt,
-      value: offer.value,
+      offer: {
+        id: offer.id,
+        message: offer.message,
+        status: offer.status,
+        title: offer.title,
+        ...UserView.returnUser(offer.user),
+        ...ServiceView.returnService(offer.service),
+        createdAt: offer.createdAt,
+        updatedAt: offer.updatedAt,
+        value: offer.value,
+      },
     };
+  }
+
+  static returnMany(offers: Offer[]) {
+    console.log('offers', offers);
+    return offers.map(offer => this.returnOffer(offer));
   }
 }

@@ -32,10 +32,10 @@ class Offer {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Service, service => service.offers)
+  @ManyToOne(() => Service, service => service.offers, { eager: true })
   service: Service;
 
-  @ManyToOne(() => User, user => user.offers)
+  @ManyToOne(() => User, user => user.offers, { eager: true })
   user: User;
 }
 

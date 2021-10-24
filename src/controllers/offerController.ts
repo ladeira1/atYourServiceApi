@@ -1,12 +1,42 @@
+/* eslint-disable no-await-in-loop */
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
+import { Offer } from '../entities/Offer';
 import { OfferRepository } from '../repositories/OfferRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { UserRepository } from '../repositories/UserRepository';
-import { CategoryView } from '../views/categoryView';
+import { WorkerRepository } from '../repositories/WorkerRepository';
 import { OfferView } from '../views/offerView';
 
 class OfferController {
+  async listByWorker(req: Request, res: Response) {
+    try {
+      const { userId } = req;
+
+      const workerRepository = getCustomRepository(WorkerRepository);
+      const worker = await workerRepository.findOne({ id: userId });
+
+      const serviceRepository = getCustomRepository(ServiceRepository);
+      const services = await serviceRepository.find({ where: { worker } });
+
+      const offers: Offer[] = [];
+
+      const offerRepository = getCustomRepository(OfferRepository);
+      for (let i = 0; i < services?.length; i++) {
+        const serviceOffers = await offerRepository.find({
+          where: { service: services[i] },
+        });
+        if (serviceOffers && serviceOffers.length > 0) {
+          offers.push(...serviceOffers);
+        }
+      }
+
+      return res.status(200).json(OfferView.returnMany(offers));
+    } catch (err) {
+      res.status(401).json(OfferView.manyErrors(err));
+    }
+  }
+
   async create(req: Request, res: Response) {
     try {
       const {

@@ -8,6 +8,13 @@ const offerController = new OfferController();
 
 const router = Router();
 
+router.get(
+  '/list',
+  authMiddleware,
+  offerValidator.list,
+  offerController.listByWorker,
+);
+
 router.post(
   '/create',
   authMiddleware,
