@@ -9,6 +9,19 @@ import { WorkerRepository } from '../repositories/WorkerRepository';
 import { OfferView } from '../views/offerView';
 
 class OfferController {
+  async get(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const offerRepository = getCustomRepository(OfferRepository);
+      const offer = await offerRepository.findOne({ id });
+      if (!offer) return res.status(200).json([]);
+
+      return res.status(200).json(OfferView.returnOffer(offer));
+    } catch (err) {
+      return res.status(401).json(OfferView.manyErrors(err));
+    }
+  }
+
   async listByWorker(req: Request, res: Response) {
     try {
       const { userId } = req;

@@ -8,6 +8,7 @@ const offerController = new OfferController();
 
 const router = Router();
 
+router.get('/:id', offerController.get);
 router.get(
   '/list',
   authMiddleware,
