@@ -96,4 +96,41 @@ export class OfferValidator {
 
     next();
   }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    const schema = Yup.object().shape({
+      id: Yup.number().required(OfferErrors.NOT_FOUND),
+    });
+
+    if (!(await schema.isValid(req.params))) {
+      const validation = await schema
+        .validate(req.body, {
+          abortEarly: false,
+        })
+        .catch(err => {
+          const errors = err.errors.map((message: string) => {
+            return message;
+          });
+          return errors;
+        });
+      return res.status(401).json(OfferView.manyErrors(validation));
+    }
+
+    const userRepository = getCustomRepository(UserRepository);
+    const user = await userRepository.findOne({ id: req.userId });
+
+    const offerRepository = getCustomRepository(OfferRepository);
+    const offer = await offerRepository.findOne({
+      id: req.params.id,
+    });
+    if (!offer || offer?.user.id !== user.id) {
+      return res
+        .status(401)
+        .json(
+          OfferView.manyErrors(OfferErrors.YOU_CAN_ONLY_DELETE_YOUR_OWN_OFFER),
+        );
+    }
+
+    next();
+  }
 }

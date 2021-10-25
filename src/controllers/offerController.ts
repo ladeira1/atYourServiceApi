@@ -79,6 +79,19 @@ class OfferController {
       res.status(401).json(OfferView.manyErrors(err));
     }
   }
+
+  async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const offerRepository = getCustomRepository(OfferRepository);
+      const offer = await offerRepository.findOne({ id });
+      await offerRepository.remove(offer);
+
+      return res.status(204).send();
+    } catch (err) {
+      return res.status(401).json(OfferView.manyErrors(err));
+    }
+  }
 }
 
 export { OfferController };

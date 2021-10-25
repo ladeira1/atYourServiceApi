@@ -21,7 +21,6 @@ export class OfferView extends DefaultView {
   }
 
   static returnMany(offers: Offer[]) {
-    console.log('offers', offers);
     return offers.map(offer => this.returnOffer(offer));
   }
 }
