@@ -133,4 +133,39 @@ export class OfferValidator {
 
     next();
   }
+
+  async createOrDelete(req: Request, res: Response, next: NextFunction) {
+    const schema = Yup.object().shape({
+      status: Yup.boolean().required(OfferErrors.REQUIRED_STATUS),
+      id: Yup.number().required(OfferErrors.NOT_FOUND),
+    });
+
+    if (!(await schema.isValid({ ...req.body, ...req.params }))) {
+      const validation = await schema
+        .validate(req.body, {
+          abortEarly: false,
+        })
+        .catch(err => {
+          const errors = err.errors.map((message: string) => {
+            return message;
+          });
+          return errors;
+        });
+      return res.status(401).json(OfferView.manyErrors(validation));
+    }
+
+    const offerRepository = getCustomRepository(OfferRepository);
+    const offer = await offerRepository.findOne({
+      id: req.params.id,
+    });
+    if (!offer || offer?.service.worker.id !== req.userId) {
+      return res
+        .status(401)
+        .json(
+          OfferView.manyErrors(OfferErrors.YOU_CAN_ONLY_UPDATE_YOUR_OWN_OFFER),
+        );
+    }
+
+    next();
+  }
 }

@@ -92,6 +92,25 @@ class OfferController {
       return res.status(401).json(OfferView.manyErrors(err));
     }
   }
+
+  async acceptOrRefuse(req: Request, res: Response) {
+    try {
+      const {
+        params: { id },
+        body: { status },
+      } = req;
+
+      const offerRepository = getCustomRepository(OfferRepository);
+      const offer = await offerRepository.findOne({ where: { id } });
+      offer.status = status;
+
+      await offerRepository.save(offer);
+
+      return res.status(200).json(OfferView.returnOffer(offer));
+    } catch (err) {
+      return res.status(401).json(OfferView.manyErrors(err));
+    }
+  }
 }
 
 export { OfferController };

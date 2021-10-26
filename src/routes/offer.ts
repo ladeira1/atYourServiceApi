@@ -23,6 +23,13 @@ router.post(
   offerController.create,
 );
 
+router.patch(
+  '/accept_or_refuse/:id',
+  authMiddleware,
+  offerValidator.createOrDelete,
+  offerController.acceptOrRefuse,
+);
+
 router.delete(
   '/delete/:id',
   authMiddleware,
