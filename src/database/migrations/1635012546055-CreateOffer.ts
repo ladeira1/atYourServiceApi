@@ -31,7 +31,7 @@ export class CreateOffer1635012546055 implements MigrationInterface {
           },
           {
             name: 'status',
-            type: 'boolean',
+            type: 'varchar',
           },
           {
             name: 'created_at',

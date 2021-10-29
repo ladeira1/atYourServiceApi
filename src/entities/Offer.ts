@@ -24,7 +24,7 @@ class Offer {
   value: number;
 
   @Column()
-  status: boolean;
+  status: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

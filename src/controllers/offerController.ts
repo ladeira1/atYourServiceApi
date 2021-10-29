@@ -6,6 +6,7 @@ import { OfferRepository } from '../repositories/OfferRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { WorkerRepository } from '../repositories/WorkerRepository';
+import { Status } from '../types/Status';
 import { OfferView } from '../views/offerView';
 
 class OfferController {
@@ -68,7 +69,7 @@ class OfferController {
         title,
         message,
         value,
-        status: false,
+        status: Status.PENDING,
         service,
         user,
       });

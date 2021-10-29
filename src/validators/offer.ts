@@ -8,6 +8,7 @@ import { OfferRepository } from '../repositories/OfferRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import { WorkerRepository } from '../repositories/WorkerRepository';
+import { Status } from '../types/Status';
 import { OfferView } from '../views/offerView';
 
 export class OfferValidator {
@@ -136,7 +137,9 @@ export class OfferValidator {
 
   async createOrDelete(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
-      status: Yup.boolean().required(OfferErrors.REQUIRED_STATUS),
+      status: Yup.string()
+        .oneOf([Status.ACCEPTED, Status.FINISHED, Status.PENDING])
+        .required(OfferErrors.REQUIRED_STATUS),
       id: Yup.number().required(OfferErrors.NOT_FOUND),
     });
 
