@@ -14,8 +14,13 @@ import { Image } from '../entities/Image';
 class ServiceController {
   async list(req: Request, res: Response) {
     try {
+      const { category } = req.query;
       const serviceRepository = getCustomRepository(ServiceRepository);
-      const services = await serviceRepository.find();
+      let filter = {};
+
+      if (category) filter = { ...filter, category };
+
+      const services = await serviceRepository.find({ where: filter });
 
       return res.status(200).json(ServiceView.returnMany(services));
     } catch (err) {

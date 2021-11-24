@@ -49,7 +49,9 @@ export class UserValidator {
 
   async login(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
-      email: Yup.string().email().required(UserErrors.REQUIRED_EMAIL),
+      email: Yup.string()
+        .email(UserErrors.INVALID_EMAIL)
+        .required(UserErrors.REQUIRED_EMAIL),
       password: Yup.string()
         .required(UserErrors.REQUIRED_PASSWORD)
         .min(6, UserErrors.INVALID_PASSWORD),
