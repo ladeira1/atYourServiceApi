@@ -33,7 +33,7 @@ export class CreateImage1634855884972 implements MigrationInterface {
           },
           {
             name: 'service',
-            type: 'integer',
+            type: 'uuid',
           },
         ],
       }),

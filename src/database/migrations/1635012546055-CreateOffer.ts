@@ -49,7 +49,7 @@ export class CreateOffer1635012546055 implements MigrationInterface {
           },
           {
             name: 'service',
-            type: 'integer',
+            type: 'uuid',
           },
         ],
       }),

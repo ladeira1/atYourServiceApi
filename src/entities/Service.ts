@@ -29,6 +29,9 @@ class Service {
   @Column({ name: 'times_provided' })
   timesProvided: number;
 
+  @Column()
+  description: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

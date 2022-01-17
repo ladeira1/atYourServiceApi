@@ -3,6 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import { OfferErrors } from '../errors/offer';
 import { ServiceErrors } from '../errors/service';
+import { UserErrors } from '../errors/user';
 import { WorkerErrors } from '../errors/worker';
 import { OfferRepository } from '../repositories/OfferRepository';
 import { ServiceRepository } from '../repositories/ServiceRepository';
@@ -17,6 +18,18 @@ export class OfferValidator {
     const worker = await workerRepository.findOne({ id: req.userId });
     if (!worker) {
       return res.status(404).json(OfferView.manyErrors(WorkerErrors.NOT_FOUND));
+    }
+
+    next();
+  }
+
+  async listByUser(req: Request, res: Response, next: NextFunction) {
+    const userRepository = getCustomRepository(UserRepository);
+    const user = await userRepository.findOne({ id: req.userId });
+    if (!user) {
+      return res
+        .status(404)
+        .json(OfferView.manyErrors(UserErrors.ACCOUNT_NOT_FOUND));
     }
 
     next();

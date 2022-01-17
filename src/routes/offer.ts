@@ -14,6 +14,12 @@ router.get(
   offerValidator.list,
   offerController.listByWorker,
 );
+router.get(
+  '/list/user',
+  authMiddleware,
+  offerValidator.listByUser,
+  offerController.listByUser,
+);
 router.get('/:id', offerController.get);
 
 router.post(

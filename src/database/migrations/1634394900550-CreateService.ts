@@ -22,6 +22,10 @@ export class CreateService1634394900550 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'description',
+            type: 'varchar',
+          },
+          {
             name: 'min_value',
             type: 'numeric',
           },

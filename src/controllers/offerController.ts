@@ -51,6 +51,22 @@ class OfferController {
     }
   }
 
+  async listByUser(req: Request, res: Response) {
+    try {
+      const { userId } = req;
+
+      const userRepository = getCustomRepository(UserRepository);
+      const user = await userRepository.findOne({ id: userId });
+
+      const offerRepository = getCustomRepository(OfferRepository);
+      const offers = await offerRepository.find({ user });
+
+      return res.status(200).json(OfferView.returnMany(offers));
+    } catch (err) {
+      res.status(401).json(OfferView.manyErrors(err));
+    }
+  }
+
   async create(req: Request, res: Response) {
     try {
       const {

@@ -50,7 +50,7 @@ class ServiceController {
   async create(req: Request, res: Response) {
     try {
       const {
-        body: { name, minValue, categoryId },
+        body: { name, minValue, categoryId, description },
         userId,
         files,
       } = req;
@@ -66,6 +66,7 @@ class ServiceController {
         name,
         minValue,
         category,
+        description,
         timesProvided: 0,
         thumbsUp: 0,
         worker,
@@ -142,7 +143,7 @@ class ServiceController {
   async update(req: Request, res: Response) {
     try {
       const {
-        body: { name, minValue, categoryId },
+        body: { name, minValue, categoryId, description },
         params: { id },
         files,
       } = req;
@@ -158,6 +159,7 @@ class ServiceController {
 
         service.category = category;
       }
+      if (description) service.description = description;
 
       const imageRepository = getCustomRepository(ImageRepository);
       const images: Image[] = [];
