@@ -151,7 +151,12 @@ export class OfferValidator {
   async createOrDelete(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
       status: Yup.string()
-        .oneOf([Status.ACCEPTED, Status.FINISHED, Status.PENDING])
+        .oneOf([
+          Status.ACCEPTED,
+          Status.FINISHED,
+          Status.PENDING,
+          Status.CANCELLED,
+        ])
         .required(OfferErrors.REQUIRED_STATUS),
       id: Yup.number().required(OfferErrors.NOT_FOUND),
     });

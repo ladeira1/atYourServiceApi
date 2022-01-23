@@ -3,7 +3,7 @@ import { getToken } from '../utils/getToken';
 import { DefaultView } from './defaultView';
 
 export class UserView extends DefaultView {
-  static returnUser(user: User) {
+  static returnUser(user: User, withToken = true) {
     return {
       user: {
         id: user.id,
@@ -11,7 +11,7 @@ export class UserView extends DefaultView {
         email: user.email,
         phone: user.phone,
         city: user.city,
-        token: getToken(user.id),
+        token: withToken && getToken(user.id),
       },
     };
   }

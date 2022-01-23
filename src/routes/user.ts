@@ -7,6 +7,7 @@ const userValidator = new UserValidator();
 const userController = new UserController();
 
 const router = Router();
+router.get('/:id', userValidator.get, userController.get);
 router.post('/create', userValidator.createAccount, userController.create);
 router.post('/login', userValidator.login, userController.login);
 router.delete('/', authMiddleware, userController.delete);
