@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ILike } from 'typeorm';
 import imgbbUploader from 'imgbb-uploader';
 import { ServiceErrors } from '../errors/service';
 import { CategoryRepository } from '../repositories/CategoryRepository';
@@ -14,13 +14,17 @@ import { Image } from '../entities/Image';
 class ServiceController {
   async list(req: Request, res: Response) {
     try {
-      const { category } = req.query;
+      const { category, name } = req.query;
+
       const serviceRepository = getCustomRepository(ServiceRepository);
       let filter = {};
 
       if (category) filter = { ...filter, category };
+      if (name) filter = { ...filter, name: ILike(`%${name}%`) };
 
-      const services = await serviceRepository.find({ where: filter });
+      const services = await serviceRepository.find({
+        where: filter,
+      });
 
       return res.status(200).json(ServiceView.returnMany(services));
     } catch (err) {
