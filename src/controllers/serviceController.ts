@@ -14,13 +14,19 @@ import { Image } from '../entities/Image';
 class ServiceController {
   async list(req: Request, res: Response) {
     try {
-      const { category, name } = req.query;
+      const { category, name, workerId } = req.query;
 
       const serviceRepository = getCustomRepository(ServiceRepository);
       let filter = {};
 
       if (category) filter = { ...filter, category };
       if (name) filter = { ...filter, name: ILike(`%${name}%`) };
+      if (workerId) {
+        const workerRepository = getCustomRepository(WorkerRepository);
+        const worker = await workerRepository.findOne({ id: String(workerId) });
+        if (!worker) return res.status(200).json(ServiceView.returnMany([]));
+        filter = { ...filter, worker };
+      }
 
       const services = await serviceRepository.find({
         where: filter,
