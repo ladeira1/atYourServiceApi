@@ -98,7 +98,7 @@ export class OfferValidator {
       service,
       user,
     });
-    if (offer) {
+    if (offer && offer.status !== Status.DONE) {
       return res
         .status(401)
         .json(
@@ -151,12 +151,7 @@ export class OfferValidator {
   async createOrDelete(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
       status: Yup.string()
-        .oneOf([
-          Status.ACCEPTED,
-          Status.FINISHED,
-          Status.PENDING,
-          Status.CANCELLED,
-        ])
+        .oneOf([Status.FINISHED, Status.PENDING, Status.CANCELLED])
         .required(OfferErrors.REQUIRED_STATUS),
       id: Yup.number().required(OfferErrors.NOT_FOUND),
     });
@@ -185,6 +180,51 @@ export class OfferValidator {
         .json(
           OfferView.manyErrors(OfferErrors.YOU_CAN_ONLY_UPDATE_YOUR_OWN_OFFER),
         );
+    }
+
+    next();
+  }
+
+  async complete(req: Request, res: Response, next: NextFunction) {
+    const schema = Yup.object().shape({
+      thumbsUp: Yup.number()
+        .min(1)
+        .max(5)
+        .required(OfferErrors.INVALID_THUMBS_UP),
+      id: Yup.number().required(OfferErrors.NOT_FOUND),
+    });
+
+    if (!(await schema.isValid({ ...req.body, ...req.params }))) {
+      const validation = await schema
+        .validate(req.body, {
+          abortEarly: false,
+        })
+        .catch(err => {
+          const errors = err.errors.map((message: string) => {
+            return message;
+          });
+          return errors;
+        });
+      return res.status(401).json(OfferView.manyErrors(validation));
+    }
+
+    const offerRepository = getCustomRepository(OfferRepository);
+    const offer = await offerRepository.findOne({
+      id: req.params.id,
+    });
+
+    if (!offer || offer?.user.id !== req.userId) {
+      return res
+        .status(401)
+        .json(
+          OfferView.manyErrors(OfferErrors.YOU_CAN_ONLY_UPDATE_YOUR_OWN_OFFER),
+        );
+    }
+
+    if (offer.status !== Status.FINISHED) {
+      return res
+        .status(401)
+        .json(OfferView.manyErrors(OfferErrors.STATUS_MUST_BE_FINISHED));
     }
 
     next();

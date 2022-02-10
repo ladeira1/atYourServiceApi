@@ -31,7 +31,10 @@ export class CreateService1634394900550 implements MigrationInterface {
           },
           {
             name: 'thumbs_up',
-            type: 'integer',
+            type: 'numeric',
+            isNullable: true,
+            precision: 10,
+            scale: 2,
           },
           {
             name: 'times_provided',

@@ -23,7 +23,13 @@ class Service {
   @Column({ name: 'min_value' })
   minValue: number;
 
-  @Column({ name: 'thumbs_up' })
+  @Column({
+    name: 'thumbs_up',
+    nullable: true,
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+  })
   thumbsUp: number;
 
   @Column({ name: 'times_provided' })

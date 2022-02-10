@@ -30,6 +30,13 @@ export class CreateOffer1635012546055 implements MigrationInterface {
             type: 'numeric',
           },
           {
+            name: 'thumbs_up',
+            type: 'numeric',
+            isNullable: true,
+            precision: 10,
+            scale: 2,
+          },
+          {
             name: 'status',
             type: 'varchar',
           },

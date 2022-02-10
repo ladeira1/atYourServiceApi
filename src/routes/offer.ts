@@ -36,6 +36,13 @@ router.patch(
   offerController.acceptOrRefuse,
 );
 
+router.patch(
+  '/complete/:id',
+  authMiddleware,
+  offerValidator.complete,
+  offerController.complete,
+);
+
 router.delete(
   '/delete/:id',
   authMiddleware,

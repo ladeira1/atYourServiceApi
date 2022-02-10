@@ -26,6 +26,15 @@ class Offer {
   @Column()
   status: string;
 
+  @Column({
+    name: 'thumbs_up',
+    nullable: true,
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+  })
+  thumbsUp: number;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

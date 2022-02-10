@@ -110,6 +110,48 @@ class OfferController {
     }
   }
 
+  async complete(req: Request, res: Response) {
+    try {
+      const {
+        params: { id },
+        body: { thumbsUp },
+      } = req;
+
+      const offerRepository = getCustomRepository(OfferRepository);
+      const offer = await offerRepository.findOne({ where: { id } });
+      offer.status = Status.DONE;
+      offer.thumbsUp = thumbsUp;
+
+      const serviceRepository = getCustomRepository(ServiceRepository);
+      const service = await serviceRepository.findOne({
+        where: { id: offer.service.id },
+      });
+      service.timesProvided += 1;
+
+      const oldOffers = await offerRepository.find({
+        where: { service, status: Status.DONE },
+      });
+
+      const newThumbsUpCount = oldOffers.reduce(
+        (accumulator: number, item: Offer) => {
+          accumulator += Number(item?.thumbsUp) ?? 0;
+          return Number(accumulator);
+        },
+        thumbsUp,
+      );
+
+      service.thumbsUp = newThumbsUpCount / service.timesProvided;
+      offer.service = service;
+
+      await serviceRepository.save(service);
+      await offerRepository.save(offer);
+
+      return res.status(200).json(OfferView.returnOffer(offer));
+    } catch (err) {
+      return res.status(401).json(OfferView.manyErrors(err));
+    }
+  }
+
   async acceptOrRefuse(req: Request, res: Response) {
     try {
       const {

@@ -34,6 +34,7 @@ export const authMiddleware = async (
         return err ? new Error('Invalid token') : verifiedJwt;
       },
     );
+
     req.userId = decoded.id;
 
     next();
