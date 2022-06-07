@@ -8,6 +8,27 @@ import { WorkerView } from '../views/workerView';
 import { WorkerController } from './workerController';
 
 class UserController {
+  async get(req: Request, res: Response) {
+    try {
+      const userRepository = getCustomRepository(UserRepository);
+
+      const user = await userRepository.findOne({
+        where: { id: req?.params?.id },
+      });
+
+      const workerController = new WorkerController();
+      const worker = await workerController.find(user.id);
+      if (worker) {
+        worker.user = user;
+        return res.status(200).json(WorkerView.returnWorker(worker));
+      }
+
+      return res.status(200).json(UserView.returnUser(user, false));
+    } catch (err) {
+      res.status(401).json(UserView.manyErrors(err.message));
+    }
+  }
+
   async create(req: Request, res: Response) {
     try {
       const { name, email, city, password, phone } = req.body;

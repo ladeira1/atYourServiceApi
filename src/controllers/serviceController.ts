@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, ILike } from 'typeorm';
 import imgbbUploader from 'imgbb-uploader';
 import { ServiceErrors } from '../errors/service';
 import { CategoryRepository } from '../repositories/CategoryRepository';
@@ -14,8 +14,23 @@ import { Image } from '../entities/Image';
 class ServiceController {
   async list(req: Request, res: Response) {
     try {
+      const { category, name, workerId } = req.query;
+
       const serviceRepository = getCustomRepository(ServiceRepository);
-      const services = await serviceRepository.find();
+      let filter = {};
+
+      if (category) filter = { ...filter, category };
+      if (name) filter = { ...filter, name: ILike(`%${name}%`) };
+      if (workerId) {
+        const workerRepository = getCustomRepository(WorkerRepository);
+        const worker = await workerRepository.findOne({ id: String(workerId) });
+        if (!worker) return res.status(200).json(ServiceView.returnMany([]));
+        filter = { ...filter, worker };
+      }
+
+      const services = await serviceRepository.find({
+        where: filter,
+      });
 
       return res.status(200).json(ServiceView.returnMany(services));
     } catch (err) {
@@ -45,7 +60,7 @@ class ServiceController {
   async create(req: Request, res: Response) {
     try {
       const {
-        body: { name, minValue, categoryId },
+        body: { name, minValue, categoryId, description },
         userId,
         files,
       } = req;
@@ -61,6 +76,7 @@ class ServiceController {
         name,
         minValue,
         category,
+        description,
         timesProvided: 0,
         thumbsUp: 0,
         worker,
@@ -137,7 +153,7 @@ class ServiceController {
   async update(req: Request, res: Response) {
     try {
       const {
-        body: { name, minValue, categoryId },
+        body: { name, minValue, categoryId, description },
         params: { id },
         files,
       } = req;
@@ -153,6 +169,7 @@ class ServiceController {
 
         service.category = category;
       }
+      if (description) service.description = description;
 
       const imageRepository = getCustomRepository(ImageRepository);
       const images: Image[] = [];

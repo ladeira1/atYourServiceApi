@@ -14,6 +14,7 @@ export class ServiceValidator {
       name: Yup.string().required(ServiceErrors.REQUIRED_NAME),
       minValue: Yup.number().required(ServiceErrors.REQUIRED_MIN_VALUE),
       categoryId: Yup.number().required(ServiceErrors.REQUIRED_CATEGORY_ID),
+      description: Yup.string().required(ServiceErrors.REQUIRED_DESCRIPTION),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -66,6 +67,7 @@ export class ServiceValidator {
   async update(req: Request, res: Response, next: NextFunction) {
     const schema = Yup.object().shape({
       name: Yup.string(),
+      description: Yup.string(),
       minValue: Yup.number(),
       categoryId: Yup.number(),
     });

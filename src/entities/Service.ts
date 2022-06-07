@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Category } from './Category';
 import { Image } from './Image';
+import { Offer } from './Offer';
 import { Worker } from './Worker';
 
 @Entity('service')
@@ -22,11 +23,20 @@ class Service {
   @Column({ name: 'min_value' })
   minValue: number;
 
-  @Column({ name: 'thumbs_up' })
+  @Column({
+    name: 'thumbs_up',
+    nullable: true,
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+  })
   thumbsUp: number;
 
   @Column({ name: 'times_provided' })
   timesProvided: number;
+
+  @Column()
+  description: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -44,6 +54,9 @@ class Service {
     eager: true,
   })
   images: Image[];
+
+  @OneToMany(() => Offer, offer => offer.service)
+  offers: Offer[];
 }
 
 export { Service };

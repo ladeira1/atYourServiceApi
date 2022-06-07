@@ -5,11 +5,11 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateService1634394900550 implements MigrationInterface {
+export class CreateOffer1635012546055 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'service',
+        name: 'offer',
         columns: [
           {
             name: 'id',
@@ -18,15 +18,15 @@ export class CreateService1634394900550 implements MigrationInterface {
             isGenerated: true,
           },
           {
-            name: 'name',
+            name: 'title',
             type: 'varchar',
           },
           {
-            name: 'description',
+            name: 'message',
             type: 'varchar',
           },
           {
-            name: 'min_value',
+            name: 'value',
             type: 'numeric',
           },
           {
@@ -37,8 +37,8 @@ export class CreateService1634394900550 implements MigrationInterface {
             scale: 2,
           },
           {
-            name: 'times_provided',
-            type: 'integer',
+            name: 'status',
+            type: 'varchar',
           },
           {
             name: 'created_at',
@@ -51,11 +51,11 @@ export class CreateService1634394900550 implements MigrationInterface {
             default: 'now()',
           },
           {
-            name: 'category',
-            type: 'integer',
+            name: 'user',
+            type: 'uuid',
           },
           {
-            name: 'worker',
+            name: 'service',
             type: 'uuid',
           },
         ],
@@ -63,22 +63,22 @@ export class CreateService1634394900550 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'service',
+      'offer',
       new TableForeignKey({
-        columnNames: ['category'],
+        columnNames: ['service'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'category',
+        referencedTableName: 'service',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
     );
 
     await queryRunner.createForeignKey(
-      'service',
+      'offer',
       new TableForeignKey({
-        columnNames: ['worker'],
+        columnNames: ['user'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'worker',
+        referencedTableName: 'user',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       }),
@@ -86,6 +86,6 @@ export class CreateService1634394900550 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('service');
+    await queryRunner.dropTable('offer');
   }
 }
