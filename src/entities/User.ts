@@ -14,35 +14,25 @@ import { Worker } from './Worker';
 
 @Entity('user')
 class User {
-  @PrimaryColumn({ type: 'uuid' })
-  id: string;
+  @PrimaryColumn({ type: 'uuid' }) id: string;
 
-  @Column()
-  name: string;
+  @Column() name: string;
 
-  @Column({ unique: true })
-  email: string;
+  @Column({ unique: true }) email: string;
 
-  @Column()
-  password: string;
+  @Column() password: string;
 
-  @Column()
-  phone: string;
+  @Column() phone: string;
 
-  @Column()
-  city: string;
+  @Column() city: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
+  @CreateDateColumn({ name: 'created_at' }) createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @UpdateDateColumn({ name: 'updated_at' }) updatedAt: Date;
 
-  @OneToOne(() => Worker, worker => worker.user)
-  worker: Worker;
+  @OneToOne(() => Worker, worker => worker.user) worker: Worker;
 
-  @OneToMany(() => Offer, offer => offer.user)
-  offers: Offer[];
+  @OneToMany(() => Offer, offer => offer.user) offers: Offer[];
 
   constructor() {
     if (!this.id) this.id = uuid();
