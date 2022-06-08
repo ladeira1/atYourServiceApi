@@ -8,7 +8,7 @@
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
     "build": "tsc",
     "start": "yarn serve",
-    "serve": "export NODE_ENV=production && node dist/server.js",
+    "serve": "cd dist && node server.js",
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
