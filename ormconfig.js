@@ -9,11 +9,11 @@ module.exports = [
     // database: process.env.DATABASE_NAME,
     url: process.env.DATABASE_URL,
     synchronize: true,
-    migrations: ['./{src, dist}/database/migrations/*.{js,ts}'],
-    entities: ['./{src, dist}/entities/*.{js,ts}'],
+    migrations: ['./dist/database/migrations/*.{js,ts}'],
+    entities: ['./dist/entities/*.{js,ts}'],
     cli: {
-      migrationsDir: './{src, dist}/database/migrations',
-      entitiesDir: './{src, dist}/entities',
+      migrationsDir: './dist/database/migrations',
+      entitiesDir: './dist/entities',
     },
     sll: true,
     extra: {
