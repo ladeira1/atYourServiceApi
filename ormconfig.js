@@ -15,5 +15,11 @@ module.exports = [
       migrationsDir: './src/database/migrations',
       entitiesDir: './src/entities',
     },
+    sll: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   },
 ];
