@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "heroku-postbuild": "yarn run build",
+    "heroku-postbuild": "yarn run build && yarn typeorm migration:run",
     "build": "tsc",
     "start": "yarn serve",
     "serve": "cd dist && node server.js",
