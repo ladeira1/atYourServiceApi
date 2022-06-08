@@ -12,6 +12,9 @@ exports.app = (0, express_1.default)();
 exports.app.use((0, cors_1.default)());
 exports.app.use(express_1.default.json());
 exports.app.use(routes_1.router);
+exports.app.get('/', function (req, res) {
+    return res.json({ message: 'Hello World' });
+});
 exports.app.listen(3333, function () {
     console.log('Server running on port 3333');
 });
