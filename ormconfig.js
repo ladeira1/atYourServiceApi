@@ -1,3 +1,6 @@
+// regex to get all js and ts files from a directory
+// const regex = /(?:\.js|\.ts)$/;
+
 module.exports = [
   {
     name: 'default',
@@ -9,8 +12,8 @@ module.exports = [
     // database: process.env.DATABASE_NAME,
     url: process.env.DATABASE_URL,
     synchronize: true,
-    migrations: ['./src/database/migrations/*.ts'],
-    entities: ['./src/entities/*.ts'],
+    migrations: ['./src/database/migrations/*./(?:.js|.ts)$/'],
+    entities: ['./src/entities/*./(?:.js|.ts)$/'],
     cli: {
       migrationsDir: './src/database/migrations',
       entitiesDir: './src/entities',
