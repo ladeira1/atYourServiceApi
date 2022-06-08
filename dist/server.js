@@ -4,14 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
-const express_1 = __importDefault(require("express"));
+var express_1 = __importDefault(require("express"));
 require("./database");
-const cors_1 = __importDefault(require("cors"));
-const routes_1 = require("./routes");
+var cors_1 = __importDefault(require("cors"));
+var routes_1 = require("./routes");
 exports.app = (0, express_1.default)();
 exports.app.use((0, cors_1.default)());
 exports.app.use(express_1.default.json());
 exports.app.use(routes_1.router);
-exports.app.listen(3333, () => {
+exports.app.get('/', function (req, res) {
+    return res.json({ message: 'Hello World' });
+});
+exports.app.listen(3333, function () {
     console.log('Server running on port 3333');
 });

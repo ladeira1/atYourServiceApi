@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const authConfig = {
+var authConfig = {
     secret: process.env.TOKEN_SECRET,
     expiresIn: process.env.EXPIRATION_DATE,
 };

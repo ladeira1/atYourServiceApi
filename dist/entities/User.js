@@ -13,65 +13,66 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const typeorm_1 = require("typeorm");
-const uuid_1 = require("uuid");
-const Offer_1 = require("./Offer");
-const Worker_1 = require("./Worker");
-let User = class User {
-    constructor() {
+var bcryptjs_1 = __importDefault(require("bcryptjs"));
+var typeorm_1 = require("typeorm");
+var uuid_1 = require("uuid");
+var Offer_1 = require("./Offer");
+var Worker_1 = require("./Worker");
+var User = /** @class */ (function () {
+    function User() {
         if (!this.id)
             this.id = (0, uuid_1.v4)();
     }
-    hashPassword(password) {
+    User.prototype.hashPassword = function (password) {
         this.password = bcryptjs_1.default.hashSync(password, 8);
-    }
-    validatePassword(password) {
+    };
+    User.prototype.validatePassword = function (password) {
         return bcryptjs_1.default.compareSync(password, this.password);
-    }
-};
-__decorate([
-    (0, typeorm_1.PrimaryColumn)({ type: 'uuid' }),
-    __metadata("design:type", String)
-], User.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "name", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "phone", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "city", void 0);
-__decorate([
-    (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
-    __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
-    __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => Worker_1.Worker, worker => worker.user),
-    __metadata("design:type", Worker_1.Worker)
-], User.prototype, "worker", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Offer_1.Offer, offer => offer.user),
-    __metadata("design:type", Array)
-], User.prototype, "offers", void 0);
-User = __decorate([
-    (0, typeorm_1.Entity)('user'),
-    __metadata("design:paramtypes", [])
-], User);
+    };
+    __decorate([
+        (0, typeorm_1.PrimaryColumn)({ type: 'uuid' }),
+        __metadata("design:type", String)
+    ], User.prototype, "id", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], User.prototype, "name", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ unique: true }),
+        __metadata("design:type", String)
+    ], User.prototype, "email", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], User.prototype, "password", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], User.prototype, "phone", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], User.prototype, "city", void 0);
+    __decorate([
+        (0, typeorm_1.CreateDateColumn)({ name: 'created_at' }),
+        __metadata("design:type", Date)
+    ], User.prototype, "createdAt", void 0);
+    __decorate([
+        (0, typeorm_1.UpdateDateColumn)({ name: 'updated_at' }),
+        __metadata("design:type", Date)
+    ], User.prototype, "updatedAt", void 0);
+    __decorate([
+        (0, typeorm_1.OneToOne)(function () { return Worker_1.Worker; }, function (worker) { return worker.user; }),
+        __metadata("design:type", Worker_1.Worker)
+    ], User.prototype, "worker", void 0);
+    __decorate([
+        (0, typeorm_1.OneToMany)(function () { return Offer_1.Offer; }, function (offer) { return offer.user; }),
+        __metadata("design:type", Array)
+    ], User.prototype, "offers", void 0);
+    User = __decorate([
+        (0, typeorm_1.Entity)('user'),
+        __metadata("design:paramtypes", [])
+    ], User);
+    return User;
+}());
 exports.User = User;
